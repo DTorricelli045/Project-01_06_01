@@ -11,9 +11,9 @@
 
 //Global variables
 var formValidity = true;
-var errorInput = "rgb(229, 95, 65)";
+var errorInput = "rgb(230, 90, 90)";
 
-
+//Function to validate required fields
 function validateRequired() {
     var inputElement = document.querySelectorAll("#contactinfo input");
     var errorDiv = document.getElementById("errorText");
@@ -49,18 +49,18 @@ function validateRequired() {
 }
 
 
-    // function to validate form on submit button input
-    function validateForm(submit) {
+    // function to validate form on submit button event
+    function validateForm(evt) {
         // prevent default submit behavior
-        if (submit.preventDefault) {
-            submit.preventDefault();
+        if (evt.preventDefault) {
+            evt.preventDefault();
         } else {
-            submit.returnValue = false;
+            evt.returnValue = false;
         }
         formValidity = true;
         validateRequired(); // Located on line 16
 
-        if (formValidity === true) { // form is valid
+        if (formValidity === true) { // form is valid, reset error styles and activate a submit event, executing the form action
             document.getElementById("errorText").innerHTML = "";
             document.getElementById("errorText").style.display = "";
             document.getElementsByTagName("form")[0].submit();
@@ -79,7 +79,7 @@ function validateRequired() {
     }
 
 
-    //Page load event handlers
+    //Create Event listeners on pagge load
     if (window.addEventListener) {
         window.addEventListener("load", createEventListeners, false);
     } else if (window.attachEvent) {
