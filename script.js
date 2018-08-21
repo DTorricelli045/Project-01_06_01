@@ -11,62 +11,64 @@
 
 //Global variables
 var formValidity = true;
+var errorInput = "rgb(229, 95, 65)";
 
 
-function validateRequired(fieldsetId) {
-    var inputElements = document.querySelectorAll("#contactinfo input");
+function validateRequired() {
+    var inputElement = document.querySelectorAll("#contactinfo input");
+    var errorDiv = document.getElementById("errorText");
     var fieldsetValidity = true;
-    var currentElement;
+    var elementCount = inputElement.length;
+    var current;
 
     // look for invalid inputs
     try {
 
-        for (var i = 0; i < inputElements.length; i++) {
-            currentElement = inputElements[i];
-            if (currentElement.value === "") {
-                currentElement.style.background = "rgb(255,233,233)";
+        for (var i = 0; i < elementCount; i++) {
+            current = inputElement[i];
+            if (current.value === "") {
+                current.style.background = errorInput;
                 fieldsetValidity = false;
             } else {
-                currentElement.style.background = "white";
+                current.style.background = "white";
             }
         }
-    } catch (err) {
 
+        if (fieldsetValidity === false) {
+            throw "please enter your information";
+        } else {
+            errorDiv.style.display = "none";
+            errorDiv.innerHTML = "";
+        }
+
+    } catch (msg) {
+        errorDiv.style.display = "block";
+        errorDiv.innerHTML = msg;
+        formValidity = false;
     }
-
+}
 
 
     // function to validate form on submit button input
-    function validateForm(ret) {
+    function validateForm(submit) {
         // prevent default submit behavior
-        if (ret.preventDefault) {
-            ret.preventDefault();
+        if (submit.preventDefault) {
+            submit.preventDefault();
         } else {
-            ret.returnValue = false;
+            submit.returnValue = false;
         }
         formValidity = true;
-
         validateRequired(); // Located on line 16
 
         if (formValidity === true) { // form is valid
             document.getElementById("errorText").innerHTML = "";
-            document.getElementById("errorText").style.display = "none";
+            document.getElementById("errorText").style.display = "";
             document.getElementsByTagName("form")[0].submit();
-        } else {
-            document.getElementById("errorText").innerHTML = "Please fix the required fields.";
-            document.getElementById("errorText").style.display = "block";
-            scroll(0, 0);
-        }
-    }
-
-    //Function to run code on page load
-    function runCode() {
-        createEventListeners();
+        } 
     }
 
     //Function to Run various Event listeners
     function createEventListeners() {
-
         //Variable to call on the submit button
         var form = document.getElementsByTagName("form")[0];
         if (form.addEventListener) {
@@ -79,8 +81,7 @@ function validateRequired(fieldsetId) {
 
     //Page load event handlers
     if (window.addEventListener) {
-        window.addEventListener("load", runCode, false);
+        window.addEventListener("load", createEventListeners, false);
     } else if (window.attachEvent) {
-        window.attachEvent("onload", runCode);
+        window.attachEvent("onload", createEventListeners);
     }
-}
