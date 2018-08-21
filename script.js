@@ -11,17 +11,18 @@
 
 //Global variables
 var formValidity = true;
-var errorInput = "rgb(230, 90, 90)";
+var errorInput = "rgb(255, 233, 233)";
 
 //Function to validate required fields
 function validateRequired() {
+    //variables to support validation
     var inputElement = document.querySelectorAll("#contactinfo input");
     var errorDiv = document.getElementById("errorText");
     var fieldsetValidity = true;
     var elementCount = inputElement.length;
     var current;
 
-    // look for invalid inputs
+    // try catch to handle a loop through the fields
     try {
 
         for (var i = 0; i < elementCount; i++) {
